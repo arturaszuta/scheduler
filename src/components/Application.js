@@ -5,71 +5,8 @@ import axios from 'axios';
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./Appointment/index"
-
-const appointments = [
-  {
-    id: 1,
-    time: "12pm",
-  },
-  {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 3,
-    time: "2pm",
-    interview: {
-      student: "Thomas Birchmount",
-      interviewer: {
-        id: 2,
-        name: "Richard Garson",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 4,
-    time: "3pm",
-    interview: {
-      student: "Rambo Sylvester",
-      interviewer: {
-        id: 3,
-        name: "Tabouli Couscus",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 5,
-    time: "4pm",
-    interview: {
-      student: "Joker Mcallister",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 'last',
-    time: "5pm",
-  },
-];
-
-
-
-
-
-
+import { promised } from "q";
+import getAppointmentsForDay from "../helpers/selectors";
 
 
 export default function Application(props) {
@@ -83,25 +20,21 @@ export default function Application(props) {
   const setDay = (day) => {
     setState({...state, day: day})
   }
-
-  const setDays = (days) => {
-    // setState({...state, days: days})
-    setState(prev => ({ ...prev, days }));
-  }
-
-  // const [days, setDays] = useState([]);
-  // const [day, setDay] = useState('Monday');
-  // const [interviewer, setInterviewer] = useState(1);
   
   useEffect(() => {
-    axios.get('http://localhost:8001/api/days').then((response) => {
-      setDays(response.data);
-    })
-  }, [])
-  
-  
-  const allAppointments = appointments.map((item, index) => 
-  <Appointment key={item.id === appointments.length + 1 ? "last" : item.id } {...item} />
+
+    Promise.all([
+        axios.get('http://localhost:8001/api/days'),
+        axios.get('http://localhost:8001/api/appointments')
+      ]).then((all) => {
+        console.log('THI IS BEING CALLED');
+        setState(prev => ({...prev, days: all[0].data, appointments: all[1].data }))
+      })
+
+    }, [])
+
+  const allAppointments = getAppointmentsForDay(state, state.day).map((item) => 
+  <Appointment key={item.id === getAppointmentsForDay(state, state.day).length + 1 ? "last" : item.id } {...item} />
   )
 
   return (
