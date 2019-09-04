@@ -12,17 +12,12 @@ function getAppointmentsForDay(state, day) {
 }
 
 function getInterviewer(state, interviewerID) {
-  state.interviewers.forEach((i) => {
-    if (i.id === interviewerID) {
-      return i.name;
-    }
-  })    
+  
+  const interviewer = Object.values(state.interviewers).find((interviewer) =>
+    interviewer.id === interviewerID
+  )
+  return interviewer;
 }
 
-export default {
-  getAppointmentsForDay,
-  getInterviewer
-}
-
-
+export { getAppointmentsForDay, getInterviewer }
 
