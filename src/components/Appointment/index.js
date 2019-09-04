@@ -14,6 +14,7 @@ const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
 const CONFIRM = "CONFIRM";
+const EDIT = "EDIT";
 
 export default function Appointment(props) {
 
@@ -54,6 +55,10 @@ export default function Appointment(props) {
     })
   }
 
+  function onEdit() {
+    transition(EDIT);  
+  }
+
   return (
     <article className='appointment'>
       <Header time={props.time} />
@@ -67,8 +72,13 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interviewer}
           onDelete={onDelete}
+          onEdit={onEdit}
         />
       )}
+      {mode === EDIT && <Form 
+      name={props.interview.student} interviewer={props.interview.interviewer} interviewers={props.interviewers}
+      onSave={save}
+      onCancel={() => back()}/>}
       {mode === CREATE && <Form 
       onCancel={() => back()} 
       interviewers={props.interviewers} 
