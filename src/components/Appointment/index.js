@@ -7,11 +7,13 @@ import Form from "./Form";
 import Status from "./Status";
 import useVisualMode from "../../src/hooks/useVisualMode";
 import axios from 'axios';
+import Confirm from "./Confirm";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
+const CONFIRM = "CONFIRM";
 
 export default function Appointment(props) {
 
@@ -34,15 +36,37 @@ export default function Appointment(props) {
     })
   }
 
+  function onDelete(id) {
+    transition(CONFIRM);
+  }
+
+  function onCancel() {
+    back();
+  }
+
+  function onConfirm() {
+    const interview = null;
+    transition(SAVING);
+    axios.delete('http://localhost:8001/api/appointments/' + props.id
+    ).then((result) => {
+      props.deleteInterview(props.id, interview);
+      transition(EMPTY);
+    })
+  }
+
   return (
     <article className='appointment'>
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => {transition(CREATE)}} />}
       {mode === SAVING && <Status />}
+      {mode === CONFIRM && <Confirm message='Are you sure you want to delete this appointment?'
+      onCancel={onCancel}
+      onConfirm={onConfirm}/>}
       {mode === SHOW && (
         <Show
           student={props.interview.student}
           interviewer={props.interviewer}
+          onDelete={onDelete}
         />
       )}
       {mode === CREATE && <Form 
