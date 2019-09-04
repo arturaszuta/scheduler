@@ -19,5 +19,27 @@ function getInterviewer(state, interviewerID) {
   return interviewer;
 }
 
-export { getAppointmentsForDay, getInterviewer }
+function getInterviewersForDay(state, day) {
+
+  let arrOfInterviewers = [];
+  let answerArray = [];
+
+  state.days.map((element) => {
+    if (element.name === day) {
+      arrOfInterviewers = element.interviewers;
+    }
+  })
+
+  if (arrOfInterviewers.length === 0) {
+    return arrOfInterviewers;
+  } else {
+    arrOfInterviewers.forEach((element) => {
+      answerArray.push(getInterviewer(state, element));
+    })
+    return answerArray;
+  }
+
+}
+
+export { getAppointmentsForDay, getInterviewer, getInterviewersForDay }
 

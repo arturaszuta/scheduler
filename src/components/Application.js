@@ -6,7 +6,7 @@ import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./Appointment/index"
 import { promised } from "q";
-import { getAppointmentsForDay, getInterviewer } from "../helpers/selectors";
+import { getAppointmentsForDay, getInterviewer, getInterviewersForDay } from "../helpers/selectors";
 
 
 
@@ -44,9 +44,10 @@ export default function Application(props) {
       if ( item.interview) {
         interview = getInterviewer(state, item.interview.interviewer);
       }
+    const allInterviewers = getInterviewersForDay(state, state.day);
 
  
-  return <Appointment key={item.id === getAppointmentsForDay(state, state.day).length + 1 ? "last" : item.id } {...item} interviewer={interview}/>
+  return <Appointment key={item.id === getAppointmentsForDay(state, state.day).length + 1 ? "last" : item.id } {...item} interviewer={interview} interviewers={allInterviewers}/>
     })
 
   return (
