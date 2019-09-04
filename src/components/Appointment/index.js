@@ -27,12 +27,16 @@ export default function Appointment(props) {
   );
 
   function save(name, interviewer) {
+    if(!name || !interviewer) {
+      return;
+    }
+
     const interview = {
       student: name,
       interviewer
     };
 
-    transition(SAVING);
+    transition(SAVING, true);
 
     axios.put('http://localhost:8001/api/appointments/' + props.id, {
       interview
