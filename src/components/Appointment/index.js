@@ -8,6 +8,7 @@ import Status from "./Status";
 import useVisualMode from "../../src/hooks/useVisualMode";
 import axios from 'axios';
 import Confirm from "./Confirm";
+import Error from "./Error";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -15,6 +16,8 @@ const CREATE = "CREATE";
 const SAVING = "SAVING";
 const CONFIRM = "CONFIRM";
 const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
 
@@ -28,12 +31,16 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
+
     transition(SAVING);
+
     axios.put('http://localhost:8001/api/appointments/' + props.id, {
       interview
     }).then((result) => {
       props.bookInterview(props.id, interview);
       transition(SHOW);
+    }).catch((error) => {
+      transition(ERROR_SAVE, true);
     })
   }
 
@@ -47,11 +54,13 @@ export default function Appointment(props) {
 
   function onConfirm() {
     const interview = null;
-    transition(SAVING);
+    transition(SAVING, true);
     axios.delete('http://localhost:8001/api/appointments/' + props.id
     ).then((result) => {
       props.deleteInterview(props.id, interview);
       transition(EMPTY);
+    }).catch((error) => {
+      transition(ERROR_DELETE, true);
     })
   }
 
@@ -84,6 +93,11 @@ export default function Appointment(props) {
       interviewers={props.interviewers} 
       onSave={save}
       />}
+      {mode === ERROR_SAVE && <Error 
+      message={"There was an error saving appointment."}
+      onClose={onCancel}/>}
+      {mode === ERROR_DELETE && <Error message={"There was an error deleting appointment."}
+      onClose={onCancel} />}
     </article>
   )
 }
