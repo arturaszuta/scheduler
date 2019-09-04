@@ -45,12 +45,30 @@ export default function Application(props) {
         interview = getInterviewer(state, item.interview.interviewer);
       }
     const allInterviewers = getInterviewersForDay(state, state.day);
-
+    
+    function bookInterview(id, interview) {
+      console.log(id, interview);
+      const appointment = {
+        ...state.appointments[id],
+        interview: { ...interview }
+      };
+      const appointments = {
+        ...state.appointments,
+        [id]: appointment
+      };
+      setState({...state, appointments});
+    }
  
-  return <Appointment key={item.id === getAppointmentsForDay(state, state.day).length + 1 ? "last" : item.id } {...item} interviewer={interview} interviewers={allInterviewers}/>
+  return <Appointment key={item.id} 
+  {...item} 
+  interviewer={interview} 
+  interviewers={allInterviewers}
+  bookInterview={bookInterview}
+  />
     })
 
     allAppointments.push(<Appointment key="last" time="5pm"/>);
+
 
   return (
     <main className="layout">
