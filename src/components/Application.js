@@ -39,7 +39,7 @@ export default function Application(props) {
 
     }, [])
 
-    const allAppointments = getAppointmentsForDay(state, state.day).map((item) => {
+    let allAppointments = getAppointmentsForDay(state, state.day).map((item) => {
       let interview = null;
       if ( item.interview) {
         interview = getInterviewer(state, item.interview.interviewer);
@@ -49,6 +49,8 @@ export default function Application(props) {
  
   return <Appointment key={item.id === getAppointmentsForDay(state, state.day).length + 1 ? "last" : item.id } {...item} interviewer={interview} interviewers={allInterviewers}/>
     })
+
+    allAppointments.push(<Appointment key="last" time="5pm"/>);
 
   return (
     <main className="layout">
