@@ -45,5 +45,23 @@ function getSpotsForTheDay(state, day) {
   return state.days[day].spots
 }
 
-export { getAppointmentsForDay, getInterviewer, getInterviewersForDay, getSpotsForTheDay }
+function getDayFromAppointment (state, appID) {
+  console.log("THIS IS THE APP ID", appID);
+
+  let answer = '';
+
+  state.days.forEach((day) =>  {
+
+    day.appointments.forEach((appointment) => {
+      if ( appID === appointment ) {
+        console.log('DAY FOUND', day);
+        answer = day.id;
+      }
+        
+    })
+  })
+  return answer;
+}
+
+export { getAppointmentsForDay, getInterviewer, getInterviewersForDay, getSpotsForTheDay, getDayFromAppointment }
 

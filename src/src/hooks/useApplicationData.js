@@ -1,6 +1,7 @@
 import { useEffect, useState, useReducer } from 'react';
 import axios from 'axios';
 import { statements } from '@babel/template';
+import { getDayFromAppointment } from "../../helpers/selectors";
 
 
 export default function useApplicationData() {
@@ -17,16 +18,22 @@ export default function useApplicationData() {
       case SET_APPLICATION_DATA:
         return {...state, days: action.daysValue, appointments: action.appointmentsValue, interviewers: action.interviewersValue,
         spots: action.spotsValue}
+
       case SET_INTERVIEW:
+
         const interview = action.interview;
+
         const appointment = {
           ...state.appointments[action.id],
           interview
         };
+
         const appointments = {
           ...state.appointments,
           [action.id]: appointment
         };
+
+        
         return {...state, appointments }
       case SET_SPOTS:
         return {...state, days: action.value}
@@ -61,7 +68,7 @@ export default function useApplicationData() {
     }, [])
 
     useEffect(() => {
-      const newSocket = new WebSocket("ws://localhost:8001");
+      const newSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
 
       newSocket.onopen = () => {
         newSocket.send("ping");
@@ -69,9 +76,16 @@ export default function useApplicationData() {
 
       newSocket.onmessage = (e) => {
         const msg = JSON.parse(e.data);
-        if (msg.type) {
-          dispatch(msg);
-        }
+        
+        if (msg.type === "SET_INTERVIEW") {
+          dispatch({type: "SET_INTERVIEW", id : msg.id, interview: msg.interview})
+        } 
+        
+        //   if (msg.interview) {
+        //     setSpots(state, "inc")
+        //   } else {
+        //     setSpots(state, "dec")
+        // }}
       }
       return () => newSocket.close; 
 
@@ -89,8 +103,8 @@ export default function useApplicationData() {
         [id]: appointment
       };
       
-      dispatch({ type: SET_INTERVIEW, value :appointments });
-      setSpots(state, "inc");
+      dispatch({ type: SET_INTERVIEW, value :appointments});
+      // setSpots(state, "inc");
     }
 
     function deleteInterview(id) {
@@ -103,8 +117,8 @@ export default function useApplicationData() {
         ...state.appointments,
         [id]: appointment
       };
-      dispatch({type: SET_INTERVIEW, value: appointments });
-      setSpots(state, "dec");
+      dispatch({type: SET_INTERVIEW, value: appointments});
+      // setSpots(state, "dec");
 
     }
 
