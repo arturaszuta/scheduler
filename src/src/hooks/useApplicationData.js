@@ -1,20 +1,35 @@
 import { useEffect, useState, useReducer } from 'react';
 import axios from 'axios';
+import { statements } from '@babel/template';
+
 
 export default function useApplicationData() {
 
   const SET_DAY = "SET_DAY";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
+  const SET_SPOTS = "SET_SPOTS";
 
   function reducer(state, action) {
     switch (action.type) {
       case SET_DAY:
-        return {...state, day: action.value}
+        return {...state, day: action.value }
       case SET_APPLICATION_DATA:
-        return {...state, days: action.daysValue, appointments: action.appointmentsValue, interviewers: action.interviewersValue}
+        return {...state, days: action.daysValue, appointments: action.appointmentsValue, interviewers: action.interviewersValue,
+        spots: action.spotsValue}
       case SET_INTERVIEW:
-        return {...state, appointments: action.value}
+        const interview = action.interview;
+        const appointment = {
+          ...state.appointments[action.id],
+          interview
+        };
+        const appointments = {
+          ...state.appointments,
+          [action.id]: appointment
+        };
+        return {...state, appointments }
+      case SET_SPOTS:
+        return {...state, days: action.value}
       default:
         throw new Error(`Tried to reduce with unsuported action type: ${action.type}`)
     }
@@ -25,7 +40,7 @@ export default function useApplicationData() {
     day: "Monday",
     days: [],
     appointments: {},
-    interviewers: {}
+    interviewers: {},
   });
 
   const setDay = (day) => {
@@ -39,12 +54,32 @@ export default function useApplicationData() {
         axios.get('http://localhost:8001/api/appointments'),
         axios.get('http://localhost:8001/api/interviewers'),
       ]).then((all) => {
-        dispatch(({type: SET_APPLICATION_DATA, daysValue: all[0].data, appointmentsValue: all[1].data, interviewersValue: all[2].data }))
+        dispatch(({type: SET_APPLICATION_DATA, daysValue: all[0].data, appointmentsValue: all[1].data, interviewersValue: all[2].data,
+        }))
       })
 
     }, [])
 
+    useEffect(() => {
+      const newSocket = new WebSocket("ws://localhost:8001");
+
+      newSocket.onopen = () => {
+        newSocket.send("ping");
+      }
+
+      newSocket.onmessage = (e) => {
+        const msg = JSON.parse(e.data);
+        if (msg.type) {
+          dispatch(msg);
+        }
+      }
+      return () => newSocket.close; 
+
+
+    }, [])
+
     function bookInterview(id, interview) {
+
       const appointment = {
         ...state.appointments[id],
         interview: { ...interview }
@@ -53,19 +88,47 @@ export default function useApplicationData() {
         ...state.appointments,
         [id]: appointment
       };
-      dispatch({type: SET_INTERVIEW, value :appointments});
+      
+      dispatch({ type: SET_INTERVIEW, value :appointments });
+      setSpots(state, "inc");
     }
 
-    function deleteInterview(id, interview) {
+    function deleteInterview(id) {
+      const interview = null;
       const appointment = {
         ...state.appointments[id],
-        interview: { interview }
+        interview
       };
       const appointments = {
         ...state.appointments,
         [id]: appointment
       };
-      dispatch({type: SET_INTERVIEW, value: appointments});
+      dispatch({type: SET_INTERVIEW, value: appointments });
+      setSpots(state, "dec");
+
+    }
+
+    function setSpots(state, action) {
+
+      return dispatch({type: SET_SPOTS, value: state.days.map((item) => {
+        if(state.day === item.name) {
+          if(action === 'dec') {
+            return {
+              ...item,
+              spots: item.spots +1
+            }
+          } 
+          if(action === "inc") {
+            return {
+              ...item,
+              spots: item.spots -1
+            }
+          }
+        } else {
+          return {...item}
+        }
+      })})
+
     }
 
     return {

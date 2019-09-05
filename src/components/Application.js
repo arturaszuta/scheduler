@@ -26,6 +26,7 @@ export default function Application(props) {
 
 
     let allAppointments = getAppointmentsForDay(state, state.day).map((item) => {
+      console.log(item);
       let interview = null;
       if ( item.interview) {
         interview = getInterviewer(state, item.interview.interviewer);

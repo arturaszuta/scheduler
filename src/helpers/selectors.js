@@ -41,5 +41,9 @@ function getInterviewersForDay(state, day) {
 
 }
 
-export { getAppointmentsForDay, getInterviewer, getInterviewersForDay }
+function getSpotsForTheDay(state, day) {
+  return state.days[day].spots
+}
+
+export { getAppointmentsForDay, getInterviewer, getInterviewersForDay, getSpotsForTheDay }
 
