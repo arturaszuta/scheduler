@@ -37,7 +37,7 @@ export default function Appointment(props) {
   
     },[props.interview, mode, transition]);
     
-    function save(name, interviewer) {
+    function save(name, interviewer, day) {
       if(!name || !interviewer) {
         return;
       }
@@ -50,9 +50,8 @@ export default function Appointment(props) {
       transition(SAVING, true);
       
       axios.put('http://localhost:8001/api/appointments/' + props.id, {
-        interview
+        interview, day
       }).then((result) => {
-        props.bookInterview(props.id, interview);
         transition(SHOW);
       }).catch((error) => {
         transition(ERROR_SAVE, true);
@@ -67,12 +66,11 @@ export default function Appointment(props) {
       back();
     }
     
-    function onConfirm() {
-      const interview = null;
+    function onConfirm(day) {
+      console.log(day);
       transition(SAVING, true);
-      axios.delete('http://localhost:8001/api/appointments/' + props.id
+      axios.delete('http://localhost:8001/api/appointments/' + props.id +'/' + day 
       ).then((result) => {
-        props.deleteInterview(props.id, interview);
         transition(EMPTY);
       }).catch((error) => {
         transition(ERROR_DELETE, true);
@@ -92,7 +90,9 @@ export default function Appointment(props) {
       {mode === SAVING && <Status />}
       {mode === CONFIRM && <Confirm message='Are you sure you want to delete this appointment?'
       onCancel={onCancel}
-      onConfirm={onConfirm}/>}
+      onConfirm={() => onConfirm(props.day)}
+      day={props.day}
+      />}
       {mode === SHOW && props.interviewer && (
         <Show
           student={props.interview.student}
@@ -102,13 +102,16 @@ export default function Appointment(props) {
         />
       )}
       {mode === EDIT && <Form 
-      name={props.interview.student} interviewer={props.interview.interviewer} interviewers={props.interviewers}
+      name={props.interview.student}
+      day={props.day}
+      interviewer={props.interview.interviewer} interviewers={props.interviewers}
       onSave={save}
       onCancel={() => back()}/>}
       {mode === CREATE && <Form 
       onCancel={() => back()} 
       interviewers={props.interviewers} 
       onSave={save}
+      day={props.day}
       />}
       {mode === ERROR_SAVE && <Error 
       message={"There was an error saving appointment."}
