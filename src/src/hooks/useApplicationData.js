@@ -31,13 +31,12 @@ function reducer(state, action) {
       };
 
       const days =  [...state.days ]
-      console.log(days);
-      console.log('this is action.day', action.day)
+      
       if(action.day) {
         const pos = days.map((e) => 
           e.name
          ).indexOf(action.day);
-        console.log("THIS IS POS", pos);
+        
 
         if(interview) {
           days[pos].spots --; 
@@ -90,20 +89,11 @@ export default function useApplicationData() {
 
       newSocket.onmessage = (e) => {
         const msg = JSON.parse(e.data);
-        console.log(msg);
-        
         if (msg.type === "SET_INTERVIEW") {
           dispatch({type: "SET_INTERVIEW", id : msg.id, interview: msg.interview, day: msg.day})
         } 
-        
-        //   if (msg.interview) {
-        //     setSpots(state, "inc")
-        //   } else {
-        //     setSpots(state, "dec")
-        // }}
       }
       return () => newSocket.close; 
-
 
     }, [])
 
