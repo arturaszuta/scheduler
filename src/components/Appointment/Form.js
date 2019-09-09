@@ -19,7 +19,6 @@ export default function Form(props) {
   }
 
   const day = props.day;
-  // console.log("2nd CALL interviewers", props)
 
   return (
     <main className="appointment__card appointment__card--create">

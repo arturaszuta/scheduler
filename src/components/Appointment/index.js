@@ -76,11 +76,7 @@ export default function Appointment(props) {
     function onEdit() {
       transition(EDIT);  
     }
-    if (!props.interviewers)
-     console.log(props.interviewers);
 
-    
-    
     return (
       <article className='appointment' data-testid="appointment">
       <Header time={props.time} />
