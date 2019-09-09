@@ -38,9 +38,6 @@ export default function Appointment(props) {
     },[props.interview, mode, transition]);
     
     function save(name, interviewer, day) {
-      if(!name || !interviewer) {
-        return;
-      }
       
       const interview = {
         student: name,
