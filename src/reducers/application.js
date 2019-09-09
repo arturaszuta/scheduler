@@ -44,6 +44,6 @@ export default function reducer(state, action) {
     case SET_SPOTS:
       return {...state, days: action.value}
     default:
-      throw new Error(`Tried to reduce with unsuported action type: ${action.type}`)
+      throw new Error(`Tried to reduce with unsupported action type: ${action.type}`)
   }
 }

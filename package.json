@@ -44,6 +44,10 @@
     "prop-types": "^15.7.2"
   },
   "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/index.js"
+    ],
     "watchPathIgnorePatterns": [
       "<rootDir>/node_modules/"
     ]
