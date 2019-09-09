@@ -73,7 +73,7 @@ export default function useApplicationData() {
         axios.get('http://localhost:8001/api/appointments'),
         axios.get('http://localhost:8001/api/interviewers'),
       ]).then((all) => {
-        console.log("YRDYDRyDRYDRY")
+        console.log(all);
         dispatch(({type: SET_APPLICATION_DATA, daysValue: all[0].data, appointmentsValue: all[1].data, interviewersValue: all[2].data,
         }))
       })
@@ -81,7 +81,7 @@ export default function useApplicationData() {
     }, [])
 
     useEffect(() => {
-      const newSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+      const newSocket = new WebSocket("ws://localhost:8001");
 
       newSocket.onopen = () => {
         newSocket.send("ping");
