@@ -73,7 +73,6 @@ export default function useApplicationData() {
         axios.get('http://localhost:8001/api/appointments'),
         axios.get('http://localhost:8001/api/interviewers'),
       ]).then((all) => {
-        console.log(all);
         dispatch(({type: SET_APPLICATION_DATA, daysValue: all[0].data, appointmentsValue: all[1].data, interviewersValue: all[2].data,
         }))
       })

@@ -46,7 +46,6 @@ function getSpotsForTheDay(state, day) {
 }
 
 function getDayFromAppointment (state, appID) {
-  console.log("THIS IS THE APP ID", appID);
 
   let answer = '';
 
@@ -54,7 +53,6 @@ function getDayFromAppointment (state, appID) {
 
     day.appointments.forEach((appointment) => {
       if ( appID === appointment ) {
-        console.log('DAY FOUND', day);
         answer = day.id;
       }
         

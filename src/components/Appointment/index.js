@@ -64,7 +64,6 @@ export default function Appointment(props) {
     }
     
     function onConfirm(day) {
-      console.log(day);
       transition(SAVING, true);
       axios.delete('http://localhost:8001/api/appointments/' + props.id +'/' + day 
       ).then((result) => {
@@ -77,11 +76,13 @@ export default function Appointment(props) {
     function onEdit() {
       transition(EDIT);  
     }
+    if (!props.interviewers)
+     console.log(props.interviewers);
 
     
     
     return (
-      <article className='appointment'>
+      <article className='appointment' data-testid="appointment">
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => {transition(CREATE)}} />}
       {mode === SAVING && <Status />}

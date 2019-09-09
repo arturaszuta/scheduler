@@ -29,16 +29,23 @@ export default function Application(props) {
         interview = getInterviewer(state, item.interview.interviewer);
       }
     const allInterviewers = getInterviewersForDay(state, state.day);
+
     
+    if(allInterviewers) {
+      console.log("STAAAATE FIRED", allInterviewers);
+
+      
+      return <Appointment key={item.id} 
+      {...item} 
+      interviewer={interview} 
+      day={state.day}
+      interviewers={allInterviewers}
+      />
+    } else {
+      return <div></div>
+    }
     
- 
-  return <Appointment key={item.id} 
-  {...item} 
-  interviewer={interview} 
-  day={state.day}
-  interviewers={allInterviewers}
-  />
-    })
+      })
 
     allAppointments.push(<Appointment key="last" time="5pm"/>);
 
