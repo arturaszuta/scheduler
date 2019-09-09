@@ -81,7 +81,7 @@ export default function Appointment(props) {
       <article className='appointment' data-testid="appointment">
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => {transition(CREATE)}} />}
-      {mode === SAVING && <Status />}
+      {mode === SAVING && <Status message="Saving"/>}
       {mode === CONFIRM && <Confirm message='Are you sure you want to delete this appointment?'
       onCancel={onCancel}
       onConfirm={() => onConfirm(props.day)}
