@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import Button from '../Button';
 import InterviewerList from '../InterviewerList';
 
+//Form component which displays a student name field and all interviewers available that day
+
 export default function Form(props) {
   
+  //This block manages state of each individual block
+
   const [name, setName] = useState(props.name || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("");
@@ -42,8 +46,8 @@ export default function Form(props) {
       <section className="appointment__actions">
         <Button danger onClick={cancel}>Cancel</Button>
         <Button confirm onClick={()=> {
-          if (name === "") {
-            setError("Student name cannot be blank")
+          if (!name || !interviewer) {
+            setError("Must provide a student name and interviewer.")
             return;
           }
           setError("");

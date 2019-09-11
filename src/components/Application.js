@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from "react";
-
-import axios from 'axios';
-
+import React from "react";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./Appointment/index"
-import { promised } from "q";
 import { getAppointmentsForDay, getInterviewer, getInterviewersForDay } from "../helpers/selectors";
 import useApplicationData from "../src/hooks/useApplicationData";
 
 
 
 
-
+//Main application component
 
 export default function Application(props) {
 
@@ -22,24 +18,24 @@ export default function Application(props) {
   } = useApplicationData();
 
 
-
-    let allAppointments = getAppointmentsForDay(state, state.day).map((item) => {
-      let interview = null;
-      if ( item.interview) {
-        interview = getInterviewer(state, item.interview.interviewer);
-      }
-    const allInterviewers = getInterviewersForDay(state, state.day);
-      
-    return <Appointment key={item.id} 
+  //Function which builds all apointments for a specific day
+  let allAppointments = getAppointmentsForDay(state, state.day).map((item) => {
+    let interview = null;
+    if ( item.interview) {
+      interview = getInterviewer(state, item.interview.interviewer);
+    }
+  const allInterviewers = getInterviewersForDay(state, state.day);
+    
+  return <Appointment 
+    key={item.id} 
     {...item} 
     interviewer={interview} 
     day={state.day}
     interviewers={allInterviewers}
-    />
-    
-    })
+  />
+  })
 
-    allAppointments.push(<Appointment key="last" time="5pm"/>);
+  allAppointments.push(<Appointment key="last" time="5pm"/>);
 
 
   return (

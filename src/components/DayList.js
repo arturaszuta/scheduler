@@ -1,6 +1,8 @@
 import React from 'react';
 import DayListItem from "components/DayListItem";
 
+
+//Daylist component which shows all the weekdays
 export default function DayList(props) {
   const days = props.days.map((item, index) => 
     <DayListItem

@@ -1,68 +1,16 @@
-import { useEffect, useState, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import axios from 'axios';
-import { statements } from '@babel/template';
-import { getDayFromAppointment } from "../../helpers/selectors";
 
 import reducer, {
   SET_DAY,
-  SET_APPLICATION_DATA,
-  SET_INTERVIEW
+  SET_APPLICATION_DATA
 } from "reducers/application";
 
-
-
-// const SET_DAY = "SET_DAY";
-// const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-// const SET_INTERVIEW = "SET_INTERVIEW";
-// const SET_SPOTS = "SET_SPOTS";
-
-// function reducer(state, action) {
-//   switch (action.type) {
-//     case SET_DAY:
-//       return {...state, day: action.value }
-//     case SET_APPLICATION_DATA:
-//       return {...state, days: action.daysValue, appointments: action.appointmentsValue, interviewers: action.interviewersValue,
-//       spots: action.spotsValue}
-
-//     case SET_INTERVIEW:
-
-//       const interview = action.interview;
-
-//       const appointment = {
-//         ...state.appointments[action.id],
-//         interview
-//       };
-
-//       const appointments = {
-//         ...state.appointments,
-//         [action.id]: appointment
-//       };
-
-//       const days =  [...state.days ]
-      
-//       if(action.day) {
-//         const pos = days.map((e) => 
-//           e.name
-//          ).indexOf(action.day);
-        
-
-//         if(interview) {
-//           days[pos].spots --; 
-//         } else if (!interview) {
-//           days[pos].spots ++; 
-//         }
-
-//       }  
-//       return {...state, appointments, days }
-//     case SET_SPOTS:
-//       return {...state, days: action.value}
-//     default:
-//       throw new Error(`Tried to reduce with unsuported action type: ${action.type}`)
-//   }
-// }
-
+//Function which controls the application data
 export default function useApplicationData() {
 
+
+  //Initial state
   const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
     days: [],
@@ -70,10 +18,13 @@ export default function useApplicationData() {
     interviewers: {},
   });
 
+
+  //Setday state - for when we are switching between days
   const setDay = (day) => {
     dispatch({ type: SET_DAY, value: day})
   }
   
+  //Initial data load when the app loads
   useEffect(() => {
 
     Promise.all([
@@ -87,6 +38,7 @@ export default function useApplicationData() {
 
     }, [])
 
+    //Websocket communication with server - which updates all currently connected clients
     useEffect(() => {
       const newSocket = new WebSocket("ws://localhost:8001");
 

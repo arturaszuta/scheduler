@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+//Helper functions which help with the transition between rendering states
+
 export default function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
@@ -31,7 +33,3 @@ export default function useVisualMode(initial) {
     back 
   }
 }
-
-// useVisualMode("FIRST");
-// useVisualMode.transition("SECOND");
-// useVisualMode.transition("THIRD");

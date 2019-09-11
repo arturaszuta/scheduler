@@ -2,6 +2,8 @@ import React from 'react';
 import "components/DayListItem.scss";
 import classNames from "classnames";
 
+
+//Day list item which represents individual days
 export default function DayListItem(props) {
 
   function formatSpots(spotsRemaining) {

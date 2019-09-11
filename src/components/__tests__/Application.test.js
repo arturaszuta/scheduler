@@ -1,14 +1,11 @@
 import React from "react";
-import { act } from "react-dom/test-utils";
-import axios from "axios";
 
-import { render, cleanup, waitForElement, fireEvent, prettyDOM, getByText, getAllByTestId, getByAltText, getAllByAltText, getByPlaceholderText, queryByText, getByTestId } from "@testing-library/react";
+
+import { render, cleanup, waitForElement, fireEvent, getByText, getAllByTestId, getByAltText,getByPlaceholderText, getByTestId } from "@testing-library/react";
 
 
 
 import Application from "components/Application";
-import { tsExternalModuleReference } from "@babel/types";
-import Appointment from "components/Appointment";
 
 afterEach(cleanup);
 

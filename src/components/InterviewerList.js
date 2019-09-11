@@ -3,6 +3,8 @@ import InterviewerListItem from "components/InterviewerListItem";
 import "components/InterviewerList.scss";
 import PropTypes from "prop-types";
 
+
+//Interviewer list component which shows all interviewers available on the selected day
 export default function InterviewerList(props) {
   const interviewers = props.interviewers.map((item) => 
     <InterviewerListItem

@@ -1,5 +1,7 @@
 import React from 'react';
 
+//Error component to be displayed when the data is not being able to be saved
+
 export default function Error(props) {
   return (
     <main className="appointment__card appointment__card--error">

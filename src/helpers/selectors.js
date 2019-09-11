@@ -1,3 +1,5 @@
+
+//Helper function which gets appointments for a specific day
 function getAppointmentsForDay(state, day) {
   let result = [];
   state.days.forEach(element => {
@@ -11,6 +13,7 @@ function getAppointmentsForDay(state, day) {
   return result;
 }
 
+//Helper function which gets a whole interviewer object given just an ID of one
 function getInterviewer(state, interviewerID) {
   
   const interviewer = Object.values(state.interviewers).find((interviewer) =>
@@ -19,6 +22,7 @@ function getInterviewer(state, interviewerID) {
   return interviewer;
 }
 
+//Get all itnerviewers available on a specific day
 function getInterviewersForDay(state, day) {
 
   let arrOfInterviewers = [];
@@ -41,10 +45,13 @@ function getInterviewersForDay(state, day) {
 
 }
 
+//Helper function which gets all spots for a specific day
 function getSpotsForTheDay(state, day) {
   return state.days[day].spots
 }
 
+
+//Gets a specific day from an appointment ID
 function getDayFromAppointment (state, appID) {
 
   let answer = '';
