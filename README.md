@@ -6,10 +6,13 @@ Main funcitonality of this app is - booking interviews for a specific day/time o
 
 The app has been unit tested with Jest and E2E tested with Cypress.
 
+## Appointment Landing
 !["Appointment Landing"](https://github.com/arturaszuta/scheduler/blob/master/docs/appointment-landing.png)
 
+## Appointment Form
 !["Appointment Form"](https://github.com/arturaszuta/scheduler/blob/master/docs/appointment-form.png)
 
+## Appointment Result
 !["Appointment Result"](https://github.com/arturaszuta/scheduler/blob/master/docs/appointment-result.png)
 
 ## Setup
